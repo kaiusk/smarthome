@@ -51,7 +51,6 @@ void reconnect() {
     // Attempt to connect
     // If you do not want to use a username and password, change next line to
     if (client.connect("smarthome")) {
-      //if (client.connect("ESP8266Client", mqtt_user, mqtt_password)) {
       Serial.println("connected");
     } else {
       Serial.print("failed, rc=");

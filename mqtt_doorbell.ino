@@ -18,7 +18,7 @@ int pin = 0;
 
 void setup() {
   Serial.begin(115200);
-  //pinMode(INTPIN, INPUT);
+  pinMode(INTPIN, INPUT);
   setup_wifi();
   client.setServer(mqtt_server, 1883);
   attachInterrupt(digitalPinToInterrupt(INTPIN), IntCallback, FALLING);
@@ -64,9 +64,9 @@ void reconnect() {
 }
 
 void IntCallback() {
-  client.publish(topic,"doorbell,zone=gate value=0", false);
+  client.publish(topic,"doorbell,zone=gate value=1", false);
   detachInterrupt(digitalPinToInterrupt(INTPIN));
-  flipper.attach(20, flip); // debug on
+  flipper.attach(20, flip); 
 }
 
 void flip() {

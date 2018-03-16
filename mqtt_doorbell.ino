@@ -64,13 +64,13 @@ void reconnect() {
 }
 
 void IntCallback() {
-  client.publish(topic,"doorbell,zone=gate value=0", true);
+  client.publish(topic,"doorbell,zone=gate value=0", false);
   detachInterrupt(digitalPinToInterrupt(INTPIN));
   flipper.attach(20, flip); // debug on
 }
 
 void flip() {
-  client.publish(topic,"doorbell,zone=gate value=0", true);
+  client.publish(topic,"doorbell,zone=gate value=0", false);
   attachInterrupt(digitalPinToInterrupt(INTPIN), IntCallback, FALLING);
 }
 

@@ -6,7 +6,7 @@
 #define wifi_password "PASSWORD"
 
 #define mqtt_server "IP_ADDRESS"
-#define topic "doorbell/gate"
+#define topic "smarthome"
 
 #define INTPIN  D4
 
@@ -64,13 +64,13 @@ void reconnect() {
 }
 
 void IntCallback() {
-  client.publish(topic,"1", true);
+  client.publish(topic,"doorbell,zone=gate value=0", true);
   detachInterrupt(digitalPinToInterrupt(INTPIN));
   flipper.attach(20, flip); // debug on
 }
 
 void flip() {
-  client.publish(topic,"0", true);
+  client.publish(topic,"doorbell,zone=gate value=0", true);
   attachInterrupt(digitalPinToInterrupt(INTPIN), IntCallback, FALLING);
 }
 

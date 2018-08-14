@@ -19,18 +19,18 @@ void setup() {
 
 
 void loop() {
-    uint32_t startMillis = 0; //millis();
-    uint32_t endMillis = 0;//startMillis + duration;
+    uint32_t startMillis = 0; 
     
     if (tlc_fadeBufferSize < TLC_FADE_BUFFER_LENGTH - 2) {
-      for (channel = 0; channel<16; channel++) {
-        if (!tlc_isFading(channel)) {
-            startMillis = millis() + (channel * 100); // mitu ms hiljem alustab järgmine aste
-            endMillis = startMillis + 500; // mitu ms kestab ühe aste fade
-            tlc_addFade(channel, 0, 4095, startMillis, endMillis);
+        for (channel = 0; channel < 16; channel++) {
+            if (!tlc_isFading(channel)) {
+                startMillis = millis() + (channel * 200); // mitu ms hiljem alustab järgmine aste
+                tlc_addFade(channel, 0, 4095, startMillis, startMillis + 500); // mitu ms kestab ühe aste fade
+            }
         }
     }
-  }
-  tlc_updateFades();
+    tlc_updateFades();
+    //delay(10000);
+    //Tlc.init(0);
 }
 

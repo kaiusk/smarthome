@@ -7,6 +7,10 @@
 boolean sensorUpperActive;
 boolean sensorBottomActive;
 TLC_CHANNEL_TYPE channel;
+uint32_t startMillis; 
+int yhe_astme_aeg = 500;
+int koik_polevad = 10000;
+int astmete_vaheline_aeg = 200;
 
 void setup() {
   Tlc.init();
@@ -16,21 +20,37 @@ void setup() {
   Serial.begin(9600);
 }
 
+void setChannel(TLC_CHANNEL_TYPE ch) {
+    if (!tlc_isFading(ch)) {
+        startMillis = millis() + (ch * astmete_vaheline_aeg); // mitu ms hiljem alustab järgmine aste
+        // fadein
+        tlc_addFade(ch, 0, 4095, startMillis, startMillis + yhe_astme_aeg); // mitu ms kestab ühe aste fade
+        // fadeout
+        tlc_addFade(ch, 4095, 0, startMillis + koik_polevad, startMillis + koik_polevad + yhe_astme_aeg ); // mitu ms kestab ühe aste fade
+    }
+}
 
-
-void loop() {
-    uint32_t startMillis = 0; 
-    
-    if (tlc_fadeBufferSize < TLC_FADE_BUFFER_LENGTH - 2) {
+void liiguYles() {
+    if (tlc_fadeBufferSize < TLC_FADE_BUFFER_LENGTH - 2 && sensorBottomActive) {
         for (channel = 0; channel < 16; channel++) {
-            if (!tlc_isFading(channel)) {
-                startMillis = millis() + (channel * 200); // mitu ms hiljem alustab järgmine aste
-                tlc_addFade(channel, 0, 4095, startMillis, startMillis + 500); // mitu ms kestab ühe aste fade
-            }
+            setChannel(channel);
         }
     }
     tlc_updateFades();
-    //delay(10000);
-    //Tlc.init(0);
 }
 
+void liiguAlla() {
+    if (tlc_fadeBufferSize < TLC_FADE_BUFFER_LENGTH - 2 && sensorUpperActive) {
+        for (channel = 15; channel < 1; channel--) {
+            setChannel(channel);
+        }
+    }
+    tlc_updateFades();
+}
+
+void loop() {
+    liiguYles();
+    delay(10000);
+    liiguAlla();
+    delay(10000);
+}

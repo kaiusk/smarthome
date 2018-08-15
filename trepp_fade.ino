@@ -38,9 +38,9 @@ void UpperTriggerFire() {
 
 void setChannel(TLC_CHANNEL_TYPE ch) {
     // fadein
-    tlc_addFade(ch, 0, 4095, startMillis, startMillis + oneLEDtime); // mitu ms kestab ühe aste fade
+    tlc_addFade(ch, 0, 4095, startMillis, startMillis + oneLEDtime); 
     // fadeout
-    tlc_addFade(ch, 4095, 0, startMillis + allLEDon, startMillis + allLEDon + oneLEDtime ); // mitu ms kestab ühe aste fade
+    tlc_addFade(ch, 4095, 0, startMillis + allLEDon, startMillis + allLEDon + oneLEDtime ); 
 }
 
 void moveUp() {

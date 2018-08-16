@@ -1,4 +1,11 @@
 #include <SparkFun_Tlc5940.h>
+#include <OneWire.h>
+#include <DallasTemperature.h>
+
+#define ONE_WIRE_BUS 2
+OneWire oneWire(ONE_WIRE_BUS);
+DallasTemperature sensors(&oneWire);
+DeviceAddress saun;
 
 TLC_CHANNEL_TYPE channel;
 
@@ -17,8 +24,10 @@ int arvud[10][7] = {
 };
 
 void setup() {
+    sensors.begin();
+    sensors.getAddress(saun, 0);
     Tlc.init();
-    Serial.begin(9600);
+    //Serial.begin(9600);
 }
 
 
@@ -42,10 +51,20 @@ void dec_to_lcd(int led, int nr) {
 
 
 void loop() {
-    for (int i=0; i<10; i++) {
-        dec_to_lcd(0, i); // esimene nr on 2
-        dec_to_lcd(1, i+1); // teine nr on 8
+    sensors.requestTemperatures();
+    tempC = sensors.getTempC(saun);
+  
+    tmp = int(tempC*10);
+    
+    dec_to_lcd(1, (int(tmp)%100)/10);
+    dec_to_lcd(0, (int(tmp)%100)%10);
+    
+    delay(5000);
+    
+    /*for (int i=0; i<10; i++) {
+        dec_to_lcd(0, i); 
+        dec_to_lcd(1, i+1); 
         delay(2000);
-    }
+    }*/
 }
 
